@@ -29,45 +29,34 @@ jobs:
       with:
         version: 9
 
-    # 4. CHREQUEO DE SEGURIDAD: Ver dónde estamos parados realmente
-    - name: Debug repository structure
-      run: |
-        echo "=== ¿DÓNDE ESTAMOS? ==="
-        pwd
-        echo "=== ¿QUÉ ARCHIVOS HAY ACÁ? ==="
-        ls -la
-        echo "=== BORRANDO CONFIGURACIONES DE WORKSPACE SI EXISTEN ==="
-        rm -f pnpm-workspace.yaml
-      continue-on-error: true
-
-    # 5. Instalar dependencias DIRECTO EN LA RAÍZ (Donde se descargó el código)
+    # 4. Instalar dependencias usando el modo adaptativo
     - name: Install dependencies
       run: pnpm install --no-frozen-lockfile
 
-    # 6. ETAPA 1: Compilar el proyecto
+    # 5. ETAPA 1: Compilar el proyecto (Filtrando tu subproyecto)
     - name: Compile / Build
-      run: pnpm build
+      run: pnpm --filter . build
 
-    # 7. ETAPA 2 y 3: Unit Tests y Reporte de Cobertura
+    # 6. ETAPA 2 y 3: Unit Tests y Reporte de Cobertura
     - name: Run Unit Tests & Coverage (Vitest)
-      run: pnpm test -- --run
+      run: pnpm --filter . test -- --run
 
-    # 8. ETAPA 4: Análisis Estático (SonarQube Cloud)
+    # 7. ETAPA 4: Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    # 9. Descargar los navegadores para Playwright/Cucumber
+    # 8. Descargar los navegadores para Playwright/Cucumber
     - name: Install Playwright Browsers
-      run: pnpm exec playwright install --with-deps chromium
+      run: pnpm --filter . exec playwright install --with-deps chromium
 
-    # 10. ETAPA 5: Acceptance Tests (Cucumber)
+    # 9. ETAPA 5: Acceptance Tests (Cucumber)
     - name: Run Acceptance Tests (Cucumber)
-      run: pnpm at
+      run: pnpm --filter . at
 
-    # 11. ETAPA 6: Deploy Automático a GitHub Pages
+    # 10. ETAPA 6: Deploy Automático a GitHub Pages
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
