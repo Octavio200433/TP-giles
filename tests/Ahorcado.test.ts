@@ -27,3 +27,22 @@ it('debería restar una vida si se adivina una letra que no está en la palabra'
   // Assert: Verificamos que las vidas hayan bajado a 5
   expect(ahorcado.vidas()).toBe(5);
 });
+
+describe("Ahorcado - Estado Ganado", () => {
+  it("debe marcar el juego como ganado cuando se adivinan todas las letras", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("G");
+    juego.adivinar("A");
+    juego.adivinar("T");
+    juego.adivinar("O");
+    expect(juego.estaTerminado()).toBe(true);
+    expect(juego.gano()).toBe(true);
+  });
+
+  it("no debe estar ganado si falta al menos una letra", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("G");
+    expect(juego.estaTerminado()).toBe(false);
+    expect(juego.gano()).toBe(false);
+  });
+});
