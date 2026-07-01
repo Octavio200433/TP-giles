@@ -23,9 +23,9 @@ jobs:
       with:
         node-version: '22.x'
 
-    # 3. Configurar pnpm apuntando a la subcarpeta exacta
+    # 3. Configurar pnpm apuntando a la subcarpeta exacta (Actualizado a v4)
     - name: Setup pnpm
-      uses: pnpm/action-setup@v3
+      uses: pnpm/action-setup@v4   # 👈 CAMBIAMOS v3 POR v4 ACÁ
       with:
         version: 9
         run_install: |
