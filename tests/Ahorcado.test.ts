@@ -10,3 +10,9 @@ describe("Ahorcado - Inicializar partida", () => {
     expect(juego.palabraEnmascarada()).toBe("_ _ _ _");
   });
 });
+
+it("revela todas las ocurrencias de la letra acertada", () => {
+  const juego = new Ahorcado("ALA");
+  juego.adivinar("A");
+  expect(juego.palabraEnmascarada()).toBe("A _ A");
+});
