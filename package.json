@@ -1,6 +1,7 @@
 {
   "scripts": {
     "dev": "vite",
+    "build": "vite_build",
     "test": "vitest",
     "at": "bddgen && playwright test"
   },

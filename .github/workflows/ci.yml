@@ -15,7 +15,7 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0 
+        fetch-depth: 0
 
     # 2. Configurar Node.js
     - name: Setup Node.js
@@ -23,50 +23,40 @@ jobs:
       with:
         node-version: '22.x'
 
-    # 3. Configurar pnpm de forma limpia
+    # 3. Configurar pnpm
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 9
 
-    # 4. Instalar dependencias usando el modo adaptativo
+    # 4. Instalar dependencias
     - name: Install dependencies
       run: pnpm install --no-frozen-lockfile
 
-    # 5. ETAPA 1: Compilar el proyecto (Filtrando tu subproyecto)
+    # 5. Compilar el proyecto
     - name: Compile / Build
-      run: pnpm --filter . build
+      run: pnpm build
 
-    # 6. ETAPA 2 y 3: Unit Tests y Reporte de Cobertura
+    # 6. Unit Tests
     - name: Run Unit Tests & Coverage (Vitest)
-      run: pnpm --filter . test -- --run
+      run: pnpm test -- --run
 
-    # 7. ETAPA 4: Análisis Estático (SonarQube Cloud)
+    # 7. Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    # 8. Descargar los navegadores para Playwright/Cucumber
+    # 8. Descargar navegadores para Playwright/Cucumber
     - name: Install Playwright Browsers
-      run: pnpm --filter . exec playwright install --with-deps chromium
+      run: pnpm exec playwright install --with-deps chromium
 
-    # 9. ETAPA 5: Acceptance Tests (Cucumber)
+    # 9. Acceptance Tests (Cucumber)
     - name: Run Acceptance Tests (Cucumber)
-      run: pnpm --filter . at
+      run: pnpm at
 
-    # 10. PASO INTERMEDIO DE RESCATE: Rastrear la carpeta dist real
-    - name: Locate build artifacts
-      run: |
-        echo "=== ¿DÓNDE CARAJO ESTÁ LA CARPETA DIST? ==="
-        find . -type d -name "dist"
-        echo "=== DUPLICANDO CARPETA AL DIRECTORIO SEGURO ==="
-        mkdir -p ./dist
-        cp -r $(find . -type d -name "dist" | head -n 1)/* ./dist/ || true
-      continue-on-error: true
-
-    # 11. ETAPA 6: Deploy Automático a GitHub Pages
+    # 10. Deploy a GitHub Pages
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
