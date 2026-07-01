@@ -20,3 +20,9 @@ Then("se ve la palabra {string}", async ({ page }, esperada: string) => {
 Then("se ven {int} vidas", async ({ page }, vidas: number) => {
   await expect(page.getByTestId("lives")).toHaveText(String(vidas));
 });
+
+When("el jugador adivina la letra {string}", async ({ page }, letra: string) => {
+  const input = page.getByRole("textbox");
+  await input.fill(letra);
+  await input.press("Enter");
+});
