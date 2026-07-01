@@ -16,3 +16,14 @@ it("revela todas las ocurrencias de la letra acertada", () => {
   juego.adivinar("A");
   expect(juego.palabraEnmascarada()).toBe("A _ A");
 });
+
+it('debería restar una vida si se adivina una letra que no está en la palabra', () => {
+  // Arrange: Preparamos la partida (inicia con 6 vidas)
+  const ahorcado = new Ahorcado('AGIL');
+
+  // Act: Intentamos adivinar una letra que no existe
+  ahorcado.adivinar('E');
+
+  // Assert: Verificamos que las vidas hayan bajado a 5
+  expect(ahorcado.vidas()).toBe(5);
+});
