@@ -23,16 +23,13 @@ jobs:
       with:
         node-version: '22.x'
 
-    # 3. Configurar pnpm apuntando a la subcarpeta exacta (Actualizado a v4)
+    # 3. Configurar pnpm de forma limpia (Sin run_install automático)
     - name: Setup pnpm
-      uses: pnpm/action-setup@v4   # 👈 CAMBIAMOS v3 POR v4 ACÁ
+      uses: pnpm/action-setup@v4
       with:
         version: 9
-        run_install: |
-          - recursive: true
-            cwd: ./TP-agilesG1
 
-    # 4. Instalar dependencias del proyecto
+    # 4. Instalar dependencias del proyecto de forma manual en el directorio
     - name: Install dependencies
       run: pnpm install
       working-directory: ./TP-agilesG1
