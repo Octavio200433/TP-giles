@@ -9,6 +9,11 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    
+    # 🔥 ESTA LÍNEA LE DICE A GITHUB QUE SE MUEVA A LA CARPETA DE TU PROYECTO
+    defaults:
+      run:
+        working-directory: ./TP-agilesG1
 
     steps:
     # 1. Descargar el código
@@ -17,7 +22,7 @@ jobs:
       with:
         fetch-depth: 0 
 
-    # 2. Configurar Node.js (Versión compatible con tu Vite)
+    # 2. Configurar Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -44,6 +49,8 @@ jobs:
     # 7. ETAPA 4: Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: ./Tp-giles # 👈 Le avisamos a Sonar dónde está el código
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -57,10 +64,9 @@ jobs:
       run: pnpm at
 
     # 10. ETAPA 6: Deploy Automático a GitHub Pages
-    # Solo se ejecuta si todo dio VERDE y estamos en la rama principal
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: dist 
+        folder: TP-agilesG1/dist # 👈 La carpeta dist de tu subdirectorio
         branch: gh-pages
