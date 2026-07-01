@@ -9,11 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
-    # 🔥 ESTA LÍNEA LE DICE A GITHUB QUE SE MUEVA A LA CARPETA DE TU PROYECTO
-    defaults:
-      run:
-        working-directory: ./TP-agilesG1
 
     steps:
     # 1. Descargar el código
@@ -49,8 +44,6 @@ jobs:
     # 7. ETAPA 4: Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
-      with:
-        projectBaseDir: ./Tp-giles # 👈 Le avisamos a Sonar dónde está el código
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
