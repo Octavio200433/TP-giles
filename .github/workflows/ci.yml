@@ -38,14 +38,21 @@ jobs:
       run: pnpm build
 
     # 6. Unit Tests
-    - name: Run Unit Tests & Coverage (Vitest)
-      run: pnpm test -- --run
+    - name: Run Unit Tests with Coverage
+      run: pnpm test:coverage
 
     # 7. Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+      # Forzamos un timeout por si Sonar tarda en responder (ej. 5 minutos)
+      timeout-minutes: 5
+      env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     # 8. Descargar navegadores para Playwright/Cucumber
