@@ -52,5 +52,9 @@ export class Ahorcado {
   palabraSecreta(): string {
     return this.palabra;
   }
+
+  esLetraRepetida(letra: string): boolean {
+    return this.letrasAdivinadas.includes(letra.toUpperCase());
+  }
 }
 
