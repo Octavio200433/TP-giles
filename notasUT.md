@@ -41,3 +41,10 @@ Ahorcado lleva registro de las letras ya intentadas
 volver a adivinar una letra ya intentada (acertada) no descuenta vidas ni cambia el estado
 volver a adivinar una letra ya intentada (fallada) no descuenta una segunda vida
 el objeto expone de alguna forma que la letra ya fue intentada (para que la UI informe)
+
+AT 7 — Entrada inválida
+Tipea algo que no es letra, o juega con la partida terminada
+
+adivinar con un carácter que no es una letra (número, símbolo) es rechazado / no afecta el estado
+adivinar con una cadena de más de un carácter es rechazado / no afecta el estado
+adivinar una letra cuando el juego ya terminó (ganado o perdido) no tiene efecto
