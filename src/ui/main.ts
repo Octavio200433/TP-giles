@@ -1,27 +1,28 @@
 // src/ui/main.ts
 import { Ahorcado } from "../domain/Ahorcado";
 
-export function mountApp(juego: Ahorcado) {
-  // --- INYECTAMOS LA LÓGICA DE LA URL ACÁ ADENTRO ---
+export function mountApp(juegoInicial: Ahorcado) {
   const urlParams = new URLSearchParams(window.location.search);
   const wordsParam = urlParams.get("words");
   const seedParam = urlParams.get("seed");
 
-  // Si vienen parámetros en la URL, pisamos la instancia original usando el Seam
+  // Usamos una variable local 'juego' para no mutar el argumento de la función
+  let juego: Ahorcado = juegoInicial;
+
   if (wordsParam) {
     const listaPalabras = wordsParam.split(",");
     const indiceSemilla = seedParam !== null ? parseInt(seedParam, 10) : undefined;
     juego = new Ahorcado(listaPalabras, indiceSemilla);
   }
-  // --------------------------------------------------
 
   const app = document.querySelector<HTMLDivElement>('#app')!;
   let mensajeAlerta = "";
 
+
   const render = () => {
     let palabraMostrar = juego.palabraEnmascarada();
     let cartelStatus = '';
-    // ... (todo el resto del código del render e inputs queda exactamente igual)
+
 
     if (juego.estaPerdido()) {
       palabraMostrar = juego.palabraSecreta(); // Revelamos la palabra completa si perdió (AT5)

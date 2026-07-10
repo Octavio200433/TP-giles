@@ -138,4 +138,12 @@ describe("Ahorcado - Palabra al azar (Aprobación Directa)", () => {
 
     expect(juego.palabraSecreta()).toBe("LAVADORA");
   });
+
+  it("debería seleccionar una palabra usando el azar real si se pasa una lista pero no se define el índice", () => {
+    const lista = ["PERRO", "LAVADORA"];
+    const juego = new Ahorcado(lista); // No le pasamos el índice, forzamos el Math.random
+
+    // Como es un array de dos opciones, la palabra secreta tiene que ser alguna de las dos
+    expect(lista).toContain(juego.palabraSecreta());
+  });
 });
