@@ -51,5 +51,7 @@ When("inicio una nueva partida al azar fijando la semilla para que elija la prim
 
 Then("la palabra oculta debería tener 5 guiones bajos", async function ({ page }) {
   const wordLocator = page.getByTestId("word");
-  await expect(wordLocator).toHaveText("_____");
+  // Modificamos para que valide con los espacios correspondientes del dominio ("_ _ _ _ _")
+  await expect(wordLocator).toHaveText("_ _ _ _ _");
 });
+
