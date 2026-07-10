@@ -52,9 +52,12 @@ jobs:
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
           -Dsonar.coverage.exclusions=src/ui/**,features/**,tests/**,**/*.config.ts
 
-    # 7b. Verificación estricta del Quality Gate
+  # 7b. Verificación estricta del Quality Gate
     - name: SonarQube Quality Gate check
       uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+      # Agregamos una pausa para darle tiempo a SonarQube de procesar el lcov nuevo
+      with:
+        scanMetadataReportFile: .scannerwork/report-task.txt
       timeout-minutes: 5
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
